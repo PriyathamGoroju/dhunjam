@@ -1,6 +1,6 @@
 import React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { useTheme } from "@mui/material/styles";
+import { useTheme, createTheme, ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const BarGraph = ({ data }) => {
@@ -9,14 +9,29 @@ const BarGraph = ({ data }) => {
 
   const categories = Object.keys(data);
   const values = categories.map((category) => data[category]);
+  const xLabels = ['custom', 'Category A', 'Category B', 'Category C', 'Category D'];
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+      primary: {
+        main: "#90caf9",
+      },
+      secondary: {
+        main: "#f48fb1",
+      },
+    },
+  });
 
   const chartData = {
-    xAxis:[{
-          scaleType: 'band',
-          data: categories,
-          categoryGapRatio: 0.7,
-        }],
-    series: [{ data: values}],
+    xAxis: [
+      {
+        scaleType: "band",
+        data: xLabels,
+        categoryGapRatio: 0.7,
+      },
+    ],
+    series: [{ data: values }],
     width: isMobile ? 300 : 600,
     height: isMobile ? 200 : 400,
     colors: ["#CBC3E3"],
@@ -24,18 +39,9 @@ const BarGraph = ({ data }) => {
 
   return (
     <div>
-      <BarChart
-        {...chartData}
-        xAxisProps={{
-          showAxis: true,
-          showLabels: true,
-          stroke: "#ffffff",
-          fill: "#ffffff",
-        }}
-        yAxisProps={{
-          showLabels: false,
-        }}
-      />
+      <ThemeProvider theme={darkTheme}>
+        <BarChart {...chartData} />
+      </ThemeProvider>
     </div>
   );
 };
